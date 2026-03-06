@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TreeDeciduous, Info, Ban, Globe, MapPin, ChevronRight, User, Camera } from 'lucide-react';
+import { TreeDeciduous, Info, Ban, Globe, MapPin, ChevronRight, User, Camera, ImageOff } from 'lucide-react';
 
 const MentefactoApp = () => {
   const [activeSection, setActiveSection] = useState(null);
@@ -60,11 +60,37 @@ const MentefactoApp = () => {
     </div>
   );
 
+  const ImagePlaceholder = ({ src, alt, title, description }) => {
+    const [error, setError] = useState(false);
+
+    return (
+      <div className="group">
+        <div className="aspect-video bg-gray-100 rounded-2xl overflow-hidden mb-4 shadow-sm border border-gray-200 flex items-center justify-center relative">
+          {error ? (
+            <div className="flex flex-col items-center text-gray-400 p-4 text-center">
+              <ImageOff size={40} className="mb-2" />
+              <p className="text-[10px] font-bold uppercase tracking-widest">Image unavailable</p>
+            </div>
+          ) : (
+            <img 
+              src={src} 
+              alt={alt} 
+              onError={() => setError(true)}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          )}
+        </div>
+        <h4 className="font-bold text-gray-800 text-sm uppercase mb-1">{title}</h4>
+        <p className="text-xs text-gray-500 leading-relaxed">{description}</p>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-white p-6 md:p-12 font-sans text-gray-900">
       <div className="max-w-6xl mx-auto">
         
-        {/* Header simplificado */}
+        {/* Header simple con solo el nombre */}
         <div className="border-b-2 border-gray-100 pb-8 mb-12 flex flex-col md:flex-row justify-between items-end">
           <div>
             <h1 className="text-3xl font-light text-gray-500 uppercase tracking-[0.2em] mb-1">Mentefacto</h1>
@@ -77,13 +103,10 @@ const MentefactoApp = () => {
 
         {/* Estructura del Mentefacto */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center relative">
-          
-          {/* Arriba: Supraordinada */}
           <div className="md:col-start-2">
             <SectionCard type="superordinate" data={sections.superordinate} />
           </div>
 
-          {/* Fila Central */}
           <div className="md:row-start-2">
             <SectionCard type="isoordinate" data={sections.isoordinate} />
           </div>
@@ -100,13 +123,12 @@ const MentefactoApp = () => {
             <SectionCard type="exclusion" data={sections.exclusion} />
           </div>
 
-          {/* Abajo: Infraordinada */}
           <div className="md:col-start-2 md:row-start-3">
             <SectionCard type="infraordinate" data={sections.infraordinate} />
           </div>
         </div>
 
-        {/* Área de evidencia visual */}
+        {/* Área de evidencia visual con prevención de errores 404 */}
         <div className="mt-20">
           <div className="flex items-center gap-2 mb-8 border-l-4 border-green-600 pl-4">
             <Camera className="text-green-600" size={20} />
@@ -114,35 +136,24 @@ const MentefactoApp = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="group">
-              <div className="aspect-video bg-gray-100 rounded-2xl overflow-hidden mb-4 shadow-sm border border-gray-200">
-                <img 
-                  src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=1200" 
-                  alt="Bosque Conservado" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <h4 className="font-bold text-gray-800 text-sm uppercase mb-1">Figure 1: Biodiversity Hotspots</h4>
-              <p className="text-xs text-gray-500 leading-relaxed">Strategic forest regions in Colombia facing high risk of land conversion.</p>
-            </div>
-
-            <div className="group">
-              <div className="aspect-video bg-gray-100 rounded-2xl overflow-hidden mb-4 shadow-sm border border-gray-200">
-                <img 
-                  src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1200" 
-                  alt="Impacto Ambiental" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <h4 className="font-bold text-gray-800 text-sm uppercase mb-1">Figure 2: Landscape Alteration</h4>
-              <p className="text-xs text-gray-500 leading-relaxed">Documentation of ecological shifts due to illegal cattle ranching and farming expansion.</p>
-            </div>
+            <ImagePlaceholder 
+              src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80"
+              alt="Bosque Conservado"
+              title="Figure 1: Biodiversity Hotspots"
+              description="Strategic forest regions in Colombia facing high risk of land conversion."
+            />
+            <ImagePlaceholder 
+              src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80"
+              alt="Impacto Ambiental"
+              title="Figure 2: Landscape Alteration"
+              description="Documentation of ecological shifts due to illegal cattle ranching and farming expansion."
+            />
           </div>
         </div>
 
         {/* Footer minimalista */}
         <div className="mt-20 pt-8 border-t border-gray-100 flex justify-center items-center text-[10px] font-bold text-gray-400 tracking-[0.3em] uppercase">
-          <span>Luis Duarte • 2026</span>
+          <span>Luis Duarte • 2024</span>
         </div>
       </div>
     </div>
